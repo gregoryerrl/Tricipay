@@ -9,7 +9,7 @@
 <body>
     <div class="container mt-5">
         
-    <a href="index.php" style="text-decoration:none; color:inherit">
+    <a href="../index.php" style="text-decoration:none; color:inherit">
         <h1 class="w-100 text-center"  style="font-style:none; cursor:pointer">Tricipay</h1>
     </a>
         <div class="card border-primary">
