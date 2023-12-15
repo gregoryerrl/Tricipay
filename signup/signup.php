@@ -8,10 +8,13 @@
 </head>
 <body>
     <div class="container mt-5">
-    <a href="../index.php" style="text-decoration:none; color:inherit">
-        <h1 class="w-100 text-center"  style="font-style:none; cursor:pointer">Tricipay</h1>
-    </a>
-   Sign-up Page
+
+    <div class="d-flex">
+        <img class="me-2" src="assets/images/tricipay_icon.png" style="width: 10%;">
+        <a href="../index.php" style="text-decoration:none; color:inherit">
+            <h1 style="font-style:none; cursor:pointer">Tricipay</h1>
+        </a>
+    </div>
     </div>
 
     <script src="../bootstrap/dist/js/bootstrap.bundle.min.js"></script>
