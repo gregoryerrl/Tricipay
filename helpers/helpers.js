@@ -196,7 +196,7 @@ let dbQuery = {
   execute: function (query) {
     return new Promise(function (resolve, reject) {
       $.ajax({
-        url: "../helpers/db_query.php",
+        url: "../../helpers/db_query.php",
         dataType: "json",
         data: { action: "query", query: query },
         success: function (data) {
@@ -222,7 +222,7 @@ let dbQuery = {
   executeNonQuery: function (query) {
     return new Promise(function (resolve, reject) {
       $.ajax({
-        url: "../helpers/db_query.php",
+        url: "../../helpers/db_query.php",
         data: { action: "non-query", query: query },
         success: function (data) {
           resolve(data);
@@ -255,7 +255,7 @@ let session = {
   init: function () {
     return new Promise(function (resolve, reject) {
       $.ajax({
-        url: "../helpers/session.php",
+        url: "../../helpers/session.php",
         cache: false,
         method: "post",
         data: { action: "get" },
@@ -280,7 +280,7 @@ let session = {
   set: function (name, value) {
     return new Promise(function (resolve, reject) {
       $.ajax({
-        url: "../helpers/session.php",
+        url: "../../helpers/session.php",
         cache: false,
         method: "post",
         data: { action: "set", name: name, value: value },
@@ -298,7 +298,7 @@ let session = {
   destroy: function () {
     return new Promise(function (resolve, reject) {
       $.ajax({
-        url: "../helpers/session.php",
+        url: "../../helpers/session.php",
         cache: false,
         method: "post",
         data: { action: "destroy" },

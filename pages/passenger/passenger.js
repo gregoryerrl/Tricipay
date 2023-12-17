@@ -3,12 +3,23 @@ $(document).ready(function () {
   let cmbRoutes = $("[name='select-routes']");
   let tbldriverQueue = $("[name='driver-queue']");
 
+  let mdlBuy = $("[name='modal-buy'");
+  let mdlProceed = $("[name='modal-proceed'");
+  let btnProceed = $("[name='btn-proceed']");
+
   let txtPassenger = $("[name='passenger-name']");
   let txtDest = $("[name='input-dest']");
   let txtDriver = $("[name='input-driver']");
   let txtFare = $("[name='input-fare']");
+  let txtPayment = $("[name='input-payment']");
+  let lblPayment = $("[name='label-payment']");
 
-  let money = 25;
+  txtPayment.val("0");
+  lblPayment.html("Insert payment into the money slots");
+
+  let route_id;
+  let driver_id;
+  let driver_income;
 
   cmbRoutes.html(
     '<option value="default" disabled selected>Choose Destination</option>'
@@ -38,13 +49,14 @@ $(document).ready(function () {
     // Assuming txtSubjectCode is a valid reference to an input element
     var v = parseInt(cmbRoutes.val()) + 1;
     txtDest.val(allRoutes[cmbRoutes.val()].dest);
-    txtFare.val("PHP " + allRoutes[cmbRoutes.val()].fare);
+    txtFare.val(allRoutes[cmbRoutes.val()].fare);
+    route_id = allRoutes[cmbRoutes.val()].id;
     tbldriverQueue.children("tbody").children("tr").remove();
 
     let arrQueue = {};
     dbQuery
       .execute(
-        'SELECT queuetbl.driver, usertbl.fullname FROM queuetbl LEFT JOIN usertbl on usertbl.id = queuetbl.driver WHERE queuetbl.route = "' +
+        'SELECT queuetbl.*, usertbl.fullname FROM queuetbl LEFT JOIN usertbl on usertbl.id = queuetbl.driver WHERE queuetbl.route = "' +
           v +
           '" ORDER BY queuetbl.date'
       )
@@ -65,12 +77,33 @@ $(document).ready(function () {
               );
           }
         }
-        console.log(arrQueue[cmbRoutes.val()].fullname);
         txtDriver.val(arrQueue[cmbRoutes.val()].fullname);
+        driver_id = arrQueue[cmbRoutes.val()].driver;
+        driver_income = parseInt(txtFare.val()) - 1;
       });
   });
 
-  btnbuyTicket.click(function () {
-    buyTicket();
+  btnProceed.click(function () {
+    console.log("PROCEED");
+    console.log(txtPayment.val());
+    console.log(txtFare.val());
+    console.log(txtPayment.val() >= txtFare.val());
+    if (txtPayment.val() >= txtFare.val()) {
+      dbQuery.executeNonQuery(
+        'INSERT INTO salestbl VALUES ( Null, "' +
+          txtPayment.val() +
+          '", "' +
+          driver_id +
+          '", "' +
+          route_id +
+          '", "' +
+          driver_income +
+          '", Null,  "' +
+          Date.now() +
+          '", Default);'
+      );
+    } else {
+      lblPayment.html("Not enough payment*");
+    }
   });
 });

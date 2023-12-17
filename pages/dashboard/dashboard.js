@@ -93,7 +93,7 @@ $(document).ready(function () {
 
   btnLogout.click(function () {
     session.destroy().then(function () {
-      window.location.href = "../index.php";
+      window.location.href = "../../index.php";
     });
   });
 });

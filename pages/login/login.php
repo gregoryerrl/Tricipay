@@ -5,14 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="../../plugins/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../plugins/icons/font/bootstrap-icons.min.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="container mt-5">
         <div class="d-flex px-auto">
 
-            <img onclick="redirect('../index.php')" class="my-3 mx-auto" src="../assets/images/tricipay_icon.png" style="width: 10%;cursor: pointer">
+            <img onclick="redirect('../../index.php')" class="my-3 mx-auto" src="../../assets/images/tricipay_icon.png" style="width: 10%;cursor: pointer">
         </div>
         <div class="card border-warning bg-light">
             <div class="card-header bg-dark text-white text-center">Login</div>
@@ -27,15 +28,15 @@
                 </div>
                 <div class="error-message" name="error-message"></div>
                 <button name="login" class="btn btn-warning me-2 mt-1">Login</button>
-                <button class="btn btn-secondary me-2 mt-1">QR</button>
-                <a href="../signup/signup.php" class="btn btn-dark mt-1 float-end">Sign Up</a>
+                <button class="btn btn-secondary me-2 mt-1"> Use QR<i class="ms-2 bi bi-qr-code-scan"></i></button>
+                <a href="../../pages/signup/signup.php" class="btn btn-dark mt-1 float-end">Sign Up</a>
             </div>
         </div>
     </div>
 
-    <script src="../plugins/jquery/jquery.min.js"></script>
-    <script src="../helpers/helpers.js"></script>
-    <script src="../plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+    <script src="../../helpers/helpers.js"></script>
+    <script src="../../plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="login.js"></script>
 
 </body>
