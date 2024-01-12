@@ -21,7 +21,9 @@
         <div class="d-flex justify-content-around w-100 mt-5">
             <h1 style="color: orange">Brgy. Malusak Station</h1>
             <div class="input-group input-group-sm mb-3 w-50">
-                <select class="form-select rounded bg-warning p-3" style="font-size:large" name="select-routes"></select>
+                <select class="form-select rounded bg-warning p-3" style="font-size:large" name="select-routes">
+                    <option value="default" disabled selected>Choose Destination</option>
+                </select>
             </div>
         </div>
 
@@ -55,26 +57,47 @@
                 </div>
                 <div class="modal-body">
                     <div class="container d-flex flex-column py-2">
-                        <select name="passenger-type" class="form-select mb-3" aria-label="Select Passenger Type">
-                            <option selected>Select Passenger Type</option>
-                            <option value="1">Regular</option>
-                            <option value="2">Student / Senior</option>
-                            <option value="3">PWD</option>
-                        </select>
-                        <div class="input-group mb-3">
-                            <input name="passenger-name" type="text" class="form-control" placeholder="Passenger Name (Optional)" aria-label="Username">
-                        </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Destination</span>
                             <input name="input-dest" type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" readonly>
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon2">Driver</span>
-                            <input name="input-driver" type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" readonly>
-                        </div>
-                        <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon3">Fare</span>
                             <input name="input-fare" type="text" class="form-control" placeholder="" aria-describedby="basic-addon3" readonly>
+                        </div>
+                        <span class="input-group-text" id="basic-addon3">Normal Passenger</span>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-warning px-5" type="button" onclick="subPass('normal')">-</button>
+                            </div>
+                            <input id="normal" type="text" class="form-control text-center" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                            <div class="input-group-append">
+                                <button class="btn btn-warning px-5" type="button" onclick="addPass('normal')">+</button>
+                            </div>
+                        </div>
+                            <span class="input-group-text" id="basic-addon3">Student</span>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-warning px-5" type="button" onclick="subPass('student')">-</button>
+                            </div>
+                            <input id="student" type="text" class="form-control text-center" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-warning px-5" type="button" onclick="addPass('student')">+</button>
+                            </div>
+                        </div>
+                            <span class="input-group-text" id="basic-addon3">PWD / Senior Citizen</span>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-warning px-5" type="button" onclick="subPass('pwd')">-</button>
+                            </div>
+                            <input id="pwd" type="text" class="form-control text-center" placeholder="" aria-label="" aria-describedby="basic-addon3">
+                            <div class="input-group-append">
+                                <button class="btn btn-warning px-5" type="button" onclick="addPass('pwd')">+</button>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon3">Total Passengers</span>
+                            <input id="input-qtytotal" type="text" class="form-control" placeholder="" aria-describedby="basic-addon3" readonly>
                         </div>
                         <div class="w-100 d-flex flex-column justify-content-center">
                             <h5>Insert Bills:</h5>
