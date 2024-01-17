@@ -122,6 +122,7 @@ $(document).ready(function () {
       driver_income = parseInt(txtFare.val()) - 1;
       // Additional logic to handle the ticket purchase
       if (txtPayment.val() >= txtFare.val()) {
+        let ref = Date.now();
         dbQuery
           .executeNonQuery(
             'INSERT INTO salestbl VALUES ( Null, "' +
@@ -137,7 +138,7 @@ $(document).ready(function () {
               '", "' +
               passTotal +
               '", "' +
-              Date.now() +
+              ref +
               '", Default);'
           )
           .then(function () {
@@ -149,6 +150,26 @@ $(document).ready(function () {
                   selectedQueue.id +
                   '"'
               )
+              .then(function () {
+                const data = {
+                  // Collect data for printing
+                  reference: ref,
+                  stationName: "MSC Tanza Station",
+                  driverName: selectedQueue.fullname,
+                  passenger: passTotal,
+                  totalFare: txtPayment.val(),
+                  timeAndDate: new Date().toLocaleString(),
+                };
+
+                fetch("http://127.0.0.1:5000/print", {
+                  // Adjust URL for Flask server
+                  method: "POST",
+                  headers: {"Content-Type": "application/json"},
+                  body: JSON.stringify(data),
+                })
+                  .then((response) => response.json())
+                  .then((result) => console.log(result));
+              })
               .then(function () {
                 passTotal = 0;
                 window.location.reload();
