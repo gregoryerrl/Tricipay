@@ -137,7 +137,7 @@ function removeFile(filename) {
     $.ajax({
       url: rootURL + "plugins/helpers/php/delete-file.php",
       dataType: "json",
-      data: { filename: filename },
+      data: {filename: filename},
       success: function (result) {
         resolve();
       },
@@ -196,9 +196,9 @@ let dbQuery = {
   execute: function (query) {
     return new Promise(function (resolve, reject) {
       $.ajax({
-        url: "../helpers/db_query.php",
+        url: "../../helpers/db_query.php",
         dataType: "json",
-        data: { action: "query", query: query },
+        data: {action: "query", query: query},
         success: function (data) {
           query_result = data;
           resolve();
@@ -222,8 +222,8 @@ let dbQuery = {
   executeNonQuery: function (query) {
     return new Promise(function (resolve, reject) {
       $.ajax({
-        url: "../helpers/db_query.php",
-        data: { action: "non-query", query: query },
+        url: "../../helpers/db_query.php",
+        data: {action: "non-query", query: query},
         success: function (data) {
           resolve(data);
         },
@@ -255,10 +255,10 @@ let session = {
   init: function () {
     return new Promise(function (resolve, reject) {
       $.ajax({
-        url: "../helpers/session.php",
+        url: "../../helpers/session.php",
         cache: false,
         method: "post",
-        data: { action: "get" },
+        data: {action: "get"},
         dataType: "json",
         success: function (data) {
           session_data = data;
@@ -280,10 +280,10 @@ let session = {
   set: function (name, value) {
     return new Promise(function (resolve, reject) {
       $.ajax({
-        url: "../helpers/session.php",
+        url: "../../helpers/session.php",
         cache: false,
         method: "post",
-        data: { action: "set", name: name, value: value },
+        data: {action: "set", name: name, value: value},
         dataType: "json",
         success: function (data) {
           session_data = data;
@@ -298,10 +298,10 @@ let session = {
   destroy: function () {
     return new Promise(function (resolve, reject) {
       $.ajax({
-        url: "../helpers/session.php",
+        url: "../../helpers/session.php",
         cache: false,
         method: "post",
-        data: { action: "destroy" },
+        data: {action: "destroy"},
         success: function (data) {
           resolve();
         },

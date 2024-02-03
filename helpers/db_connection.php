@@ -2,7 +2,7 @@
 
   $server   = 'localhost';
   $username = 'root';
-  $password = 'new_password';
+  $password = '';
   $db       = 'tricipay';
   $conn     = new mysqli( $server, $username, $password, $db );
   

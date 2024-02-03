@@ -15,7 +15,7 @@ $(document).ready(function () {
   session.init().then(function () {
     lblFullname.html(session.get("fullname"));
 
-    dbQuery.execute("Select * From queuetbl Order By date;").then(function () {
+    dbQuery.execute("Select * From ridetbl Order By date;").then(function () {
       if (dbQuery.rows() > 0) {
         for (var i = 0; i < dbQuery.rows(); i++) {
           if (dbQuery.result(i, "driver") == session.get("user_id")) {
@@ -93,7 +93,7 @@ $(document).ready(function () {
 
   btnLogout.click(function () {
     session.destroy().then(function () {
-      window.location.href = "../index.php";
+      window.location.href = "../../index.php";
     });
   });
 });

@@ -65,4 +65,64 @@ $(document).ready(function () {
   function redirect(url) {
     window.location.href = url;
   }
+
+  let qrCodeResult = "";
+
+  $("#cameraModal").on("show.bs.modal", function (event) {
+    const video = document.getElementById("cameraStream");
+    const canvasElement = document.createElement("canvas");
+    const canvas = canvasElement.getContext("2d");
+
+    function scanQRCode() {
+      if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        canvasElement.height = video.videoHeight;
+        canvasElement.width = video.videoWidth;
+        canvas.drawImage(
+          video,
+          0,
+          0,
+          canvasElement.width,
+          canvasElement.height
+        );
+        const imageData = canvas.getImageData(
+          0,
+          0,
+          canvasElement.width,
+          canvasElement.height
+        );
+        const code = jsQR(imageData.data, imageData.width, imageData.height, {
+          inversionAttempts: "dontInvert",
+        });
+
+        if (code) {
+          qrCodeResult = code.data;
+          console.log("QR Code result:", qrCodeResult); // Log the QR code content
+          // You can also stop scanning once a QR code is found
+          // clearInterval(scanInterval);
+        }
+      }
+    }
+
+    if (navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices
+        .getUserMedia({video: {facingMode: "environment"}})
+        .then(function (stream) {
+          video.srcObject = stream;
+          const scanInterval = setInterval(scanQRCode, 1000); // Scan every 100 milliseconds
+        })
+        .catch(function (error) {
+          console.error("Error accessing the camera: ", error);
+        });
+    } else {
+      alert("Your browser does not support media devices.");
+    }
+  });
+
+  $("#cameraModal").on("hidden.bs.modal", function (event) {
+    const video = document.getElementById("cameraStream");
+    if (video.srcObject) {
+      video.srcObject.getTracks().forEach((track) => track.stop());
+    }
+    video.srcObject = null;
+  });
 });
