@@ -114,9 +114,11 @@ function startListening(start) {
 
 function addPass(elementId, fare) {
   var element = $("#" + elementId); // Convert ID to jQuery object
-  if (passTotal < 6 && parseInt(element.val()) < 6) {
+  if (passTotal < 5 && parseInt(element.val()) < 5) {
     let sum = parseInt(element.val()) + 1;
     element.val(sum.toString());
+    passTotal++;
+    console.log(passTotal);
     updateTotal(fare); // Update the total
   }
 }
@@ -126,20 +128,23 @@ function subPass(elementId, fare) {
   if (passTotal > 0 && parseInt(element.val()) > 0) {
     let diff = parseInt(element.val()) - 1;
     element.val(diff.toString());
+    passTotal--;
+    console.log(passTotal);
     updateTotal(fare); // Update the total
   }
 }
 
 function updateTotal(fare) {
-  const studentDiscount = 0.8; // Example: 20% discount for students
+  const discountRate = 6; // 20% discount rate
 
   const normalPassengers = parseInt($("#normal").val());
   const studentPassengers = parseInt($("#student").val());
-  passTotal = parseInt($("#normal").val()) + parseInt($("#student").val());
+  const passTotal = normalPassengers + studentPassengers;
 
-  totalFare =
-    normalPassengers * fare + studentPassengers * fare * studentDiscount;
-  $("#input-qtytotal").val(normalPassengers + studentPassengers); // Update total passengers
+  const totalFare =
+    (normalPassengers * fare) + ((studentPassengers * fare) - (discountRate * studentPassengers));
+
+  $("#input-qtytotal").val(passTotal); // Update total passengers
   $("#input-paytotal").val(totalFare.toFixed(2)); // Update total fare
 }
 
@@ -164,6 +169,8 @@ $(document).ready(function () {
   txtTotal = $("[name='input-payTotal']");
   $("#normal").val("0");
   $("#student").val("0");
+
+  $("#payment").val("0");
   lblPayment.html("Insert payment into the money slots");
 
   let route_id;
@@ -171,8 +178,15 @@ $(document).ready(function () {
   let driver_income;
 
   session.init().then(function () {
+
+
+  txtFare.val("0");
+
+  $("#input-paytotal").val("0");
+
+  cmbRoutes.val('default')
     
-  $("#payment").val(25);
+  $("#payment").val("0");
     if (session.get("user_id")) {
       window.location.href = "pages/dashboard/dashboard.php";
     }
@@ -195,7 +209,7 @@ $(document).ready(function () {
       console.log(allRoutes);
     });
   });
-  txtFare.val("25");
+  txtFare.val("0");
   $("#addnormal").click(function () {
     addPass("normal", parseFloat(txtFare.val()));
   });
@@ -215,6 +229,8 @@ $(document).ready(function () {
   cmbRoutes.off("change").on("change", function () {
     // Assuming txtSubjectCode is a valid reference to an input element
     var v = parseInt(cmbRoutes.val()) + 1;
+    console.log("here");
+    console.log(v);
     txtDest.val(allRoutes[cmbRoutes.val()].dest);
     txtFare.val(allRoutes[cmbRoutes.val()].fare);
     route_id = allRoutes[cmbRoutes.val()].id;
@@ -227,8 +243,9 @@ $(document).ready(function () {
       )
       .then(function () {
         arrQueue = query_result;
+        console.log(query_result);
         if (dbQuery.rows() > 0) {
-          console.log(dbQuery.result(cmbRoutes.val(), "fullname"));
+          console.log(dbQuery.result(0, "fullname"));
           console.log(txtDriver.val());
           for (var i = 0; i < dbQuery.rows(); i++) {
             tbldriverQueue
@@ -242,8 +259,8 @@ $(document).ready(function () {
               );
           }
         }
-        txtDriver.val(arrQueue[cmbRoutes.val()].fullname);
-        driver_id = arrQueue[cmbRoutes.val()].driver;
+        txtDriver.val(arrQueue[0].fullname);
+        driver_id = arrQueue[0].driver;
         driver_income = parseInt(txtFare.val()) - 1;
       });
   });
@@ -253,7 +270,7 @@ $(document).ready(function () {
       parseInt(txtPayment.val()) >= parseInt($("#input-paytotal").val())
     );
     let selectedQueue = arrQueue.find(
-      (queue) => parseInt(queue.passenger) + passTotal <= 6
+      (queue) => parseInt(queue.passenger) + passTotal <= 5
     );
 
     if (selectedQueue) {
@@ -268,7 +285,7 @@ $(document).ready(function () {
         let change = parseInt(txtPayment.val()) - parseInt($("#input-paytotal").val());
         if (change > 0) {
           const data = {
-            dispense: change,
+            dispense: change.toString(),
           };
           fetch(`${API_URL}/dispense`, {
             // Adjust URL for Flask server
@@ -281,7 +298,7 @@ $(document).ready(function () {
         dbQuery
           .executeNonQuery(
             'INSERT INTO salestbl VALUES ( Null, "' +
-              txtPayment.val() +
+            $("#input-paytotal").val() +
               '", "' +
               route_id +
               '", "' +
@@ -291,16 +308,17 @@ $(document).ready(function () {
               '", "' +
               selectedQueue.id +
               '", "' +
-              passTotal +
+            $("#input-qtytotal").val() +
               '", "' +
               ref +
               '", Default);'
           )
           .then(function () {
+            console.log(passTotal);
             dbQuery
               .executeNonQuery(
                 "UPDATE ridetbl SET passenger = passenger + " +
-                  passTotal +
+                parseInt( $("#input-qtytotal").val()) +
                   ' WHERE id = "' +
                   selectedQueue.id +
                   '"'
@@ -312,7 +330,7 @@ $(document).ready(function () {
                   driverName: selectedQueue.fullname,
                   destination: allRoutes[cmbRoutes.val()].dest,
                   passenger: passTotal.toString(),
-                  totalFare: txtPayment.val().toString(),
+                  totalFare: $("#input-paytotal").val(),
                   timeAndDate: new Date().toLocaleString(),
                 };
                   console.log(data);
@@ -324,11 +342,13 @@ $(document).ready(function () {
                 })
                   .then((response) => response.json())
                   .then((result) => {console.log(result.success);
-                  if (result.success){
-                    cmbRoutes.val('default')
                     $("#input-qtytotal").val(passTotal);
                     dbQuery.execute('SELECT * from ridetbl WHERE driver = "' + driver_id +'"').then(function () {
-                      if (parseInt(dbQuery.result(0, "passenger")) >= 6){
+                      if (parseInt(dbQuery.result(0, "passenger")) >= 5){
+
+                        fetch("http://127.0.0.1:5000/stop-listening");
+                        $("#payment").val("0");
+                        alert("Purchase Success. Get ticket");
                         $('#confirmModal').modal('show');
                         $('#exampleModal').modal('hide');
                         dbQuery.execute('Select * from salestbl WHERE ride_id = "' + selectedQueue.id +'"').then(function () {
@@ -337,30 +357,17 @@ $(document).ready(function () {
                             driverDispense += parseInt(dbQuery.result(i, "total"));
                           }
                         })
-                        $("dispenseBtn").click(function () {
-                          let driverTotal = driverDispense - 1;
-                          const data = {
-                            dispense: driverTotal,
-                          };
-                          fetch(`${API_URL}/dispense`, {
-                            // Adjust URL for Flask server
-                            method: "POST",
-                            headers: {"Content-Type": "application/json"},
-                            body: JSON.stringify(data),
-                          })
-                          dbQuery.executeNonQuery('DELETE FROM ridetbl WHERE driver = "' + driver_id +'"').then(function () {
-                            window.location.reload();
-                          });
-                          });
                       } else {
+                        fetch("http://127.0.0.1:5000/stop-listening");
+                         $("#payment").val("0");
+                         alert("Purchase Success. Get ticket");
                         window.location.reload();
                       }
                     }
                     )
                     
-                  }
+                  
               });
-                fetch("http://127.0.0.1:5000/stop-listening");
               });
           });
       }  else {
@@ -476,6 +483,23 @@ $(document).ready(function () {
     video.srcObject = null;
   });
 
+  $("#dispenseBtn").click(function () {
+    console.log("dispense")
+    let driverTotal = driverDispense - 1;
+    const data = {
+      dispense: driverTotal.toString(),
+    };
+    fetch(`${API_URL}/dispense`, {
+      // Adjust URL for Flask server
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(data),
+    })
+    dbQuery.executeNonQuery('DELETE FROM ridetbl WHERE driver = "' + driver_id +'"').then(function () {
+      alert("Get Driver Income");
+      window.location.reload();
+    });
+    });
 
 });
 

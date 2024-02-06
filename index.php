@@ -157,7 +157,7 @@
         <script src="plugins/jquery/jquery.min.js"></script>
         <script src="plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="index.js"></script>
-        <script src="plugins/jsQR/dist/jsQr.js"></script>
+        <script src="plugins/jsQR/dist/jsQR.js"></script>
 </body>
 
 </html>
