@@ -101,7 +101,7 @@ function startListening(start) {
       .then((response) => response.json())
       .then((data) => {
         console.log("Listening status:", data.status);
-        payInterval = setInterval(logPayment, 1500);
+        payInterval = setInterval(logPayment, 300);
       })
       .catch((error) => console.error("Error starting listening:", error));
   } else {

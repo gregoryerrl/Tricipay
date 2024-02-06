@@ -29,7 +29,7 @@
             <h1 class="me-2">Hello!</h1>
             <h1 name="fullname" style="font-weight:bold; text-decoration:underline"></h1>
         </div>
-        <div class="d-flex flex-row">
+        <div class="d-flex flex-row" id="driverDashboard">
             <div class="card card-body bg-warning shadow d-flex flex-column p-3 mx-2" style="width:33.33%">
                 <h3 class="text-center w-100">Current Route:</h3>
                 <div class="w-100 justify-content-center align-items-center d-flex flex-row mt-3 mb-4">
@@ -56,6 +56,41 @@
                     <button class="btn btn-secondary border">View <i class="bi bi-eye"></i></button>
                 </div>
             </div>
+        </div>
+
+       
+        <div class="d-flex flex-row adminDashboard">
+            <div class="card card-body bg-warning shadow d-flex flex-column p-3 mx-2" style="width:33.33%">
+                <h3 class="text-center w-100">Daily Trip</h3>
+                <div class="w-100 justify-content-center align-items-center d-flex flex-row mt-3 mb-4">
+                <h2 class="text-center w-100 mb-4 mt-3" id="daily-trip"></h2>
+                </div>
+            </div>
+            <div class="card card-body bg-warning shadow  d-flex flex-column p-3 mx-2" style="width:33.33%">
+                <h3 class="text-center w-100">Daily Revenue</h3>
+                <h2 class="text-center w-100 mb-4 mt-3" id="daily-revenue"></h2>
+            </div>
+            <div class="card card-body bg-warning shadow d-flex flex-column p-3 mx-2" style="width:33.33%">
+                <h3 class="text-center w-100">Daily Income</h3>
+                <h2 class="text-center w-100 mb-4 mt-3" id="daily-income"></h2>
+            </div>
+        </div>
+
+        <div class="card card-body shadow mt-5 adminDashboard">
+            <div class="overflow-scroll bg-warning" style="height:100%; width: 100%;">
+                    <table id="driver-table" class="table table-dark table-striped">
+                        <thead class="">
+                            <tr class="">
+                                <th style='text-align:center'>Name</th>
+                                <th style='text-align:center'>Route</th>
+                                <th style='text-align:center'>Daily Trips</th>
+                                <th style='text-align:center'>Daily Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-warning">
+                        </tbody>
+                    </table>
+                </div>
         </div>
     </div>
     </div>

@@ -46,7 +46,8 @@ $(document).ready(function () {
               txtPassword.focus().select();
             } else {
               Promise.all([
-                session.set("user_id", dbQuery.result(0, "id")),
+                session.set("id", dbQuery.result(0, "id")),
+                session.set("role", dbQuery.result(0, "role")),
                 session.set("fullname", dbQuery.result(0, "fullname")),
                 session.set("route", dbQuery.result(0, "route") ?? NULL),
               ]).then(function () {
